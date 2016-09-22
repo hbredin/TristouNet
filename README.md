@@ -38,6 +38,17 @@ What did I just install?
 - [`pyannote.db.etape`](http://pyannote.github.io) is the ETAPE plugin for [`pyannote.database`](http://pyannote.github.io), a common API for multimedia databases and experimental protocols (*e.g.* `train`/`dev`/`test` sets definition).
 - [`pyannote.metrics`](http://pyannote.github.io) provides evaluation metrics.
 
+Then, edit `~/.keras/keras.json` to configure `keras` with `theano` backend.
+
+```json
+$ cat ~/.keras/keras.json
+{
+    "image_dim_ordering": "th",
+    "epsilon": 1e-07,
+    "floatx": "float32",
+    "backend": "theano"
+}
+```
 
 #### About the ETAPE database
 
