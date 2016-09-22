@@ -125,7 +125,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 # (and, while we are at it, load groundtruth for later comparison)
 >>> predictions = {}
 >>> groundtruth = {}
->>> for test_file in protocol.dev():
+>>> for test_file in protocol.development():
 ...     uri = test_file['uri']
 ...     groundtruth[uri] = test_file['annotation']
 ...     wav = test_file['medium']['wav']
@@ -149,7 +149,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ...     peak = Peak(alpha=alpha, min_duration=1.0)
 ...     for uri, reference in groundtruth.items():
 ...         # apply peak detection
-...         hypothesis = peak.apply(predicitions)
+...         hypothesis = peak.apply(predictions[uri])
 ...         # compute purity and coverage
 ...         purity[i](reference, hypothesis)
 ...         coverage[i](reference, hypothesis)
