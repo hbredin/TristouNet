@@ -88,16 +88,20 @@ freely available for anyone to use, I am willing to help you do that.
 # and the whole set of MFCC features sequences is precomputed
 >>> from pyannote.audio.embedding.generator import TripletBatchGenerator
 >>> per_label = 40  # `n` in the paper
+>>> batch_size = 32
 >>> generator = TripletBatchGenerator(
 ...     feature_extractor, protocol.train(), embedding, margin=margin,
-...     duration=duration, per_label=per_label)
+...     duration=duration, per_label=per_label, batch_size=batch_size)
 UserWarning: 68 labels (out of 179) have less than 40 training samples.
 
 # shape of feature sequences (n_frames, n_features)
 >>> input_shape = generator.get_shape()
 
 # number of samples per epoch
+# (rounded to closest batch_size multiple)
 >>> samples_per_epoch = per_label * (per_label - 1) * generator.n_labels
+>>> samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
+
 # number of epochs
 >>> nb_epoch = 70
 
