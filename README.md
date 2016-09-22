@@ -175,7 +175,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ```
 
 Replace `Segmentation` by `BICSegmentation` or `GaussianDivergenceSegmentation`
-to get baseline results. You might need to install `pyannote.algorithms` first.
+to get baseline results. You might need to install `pyannote.algorithms==0.6.5` first.
 
 ```python
 >>> from pyannote.audio.segmentation import BICSegmentation
