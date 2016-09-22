@@ -125,7 +125,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ```python
 # load pre-trained embedding
 >>> architecture_yml = log_dir + '/architecture.yml'
->>> weights_h5 = log_dir + '/weights/0069.h5'
+>>> weights_h5 = log_dir + '/weights/{epoch:04d}.h5'.format(epoch=nb_epoch - 1)
 >>> embedding = SequenceEmbedding.from_disk(architecture_yml, weights_h5)
 
 >>> from pyannote.audio.embedding.segmentation import Segmentation
