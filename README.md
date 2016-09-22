@@ -84,14 +84,18 @@ freely available for anyone to use, I am willing to help you do that.
 >>> duration = 2.0
 
 # triplet sampling
+# this might take some time as the whole corpus is loaded in memory,
+# and the whole set of MFCC features sequences is precomputed
 >>> from pyannote.audio.embedding.generator import TripletBatchGenerator
 >>> per_label = 40  # `n` in the paper
 >>> generator = TripletBatchGenerator(
 ...     feature_extractor, protocol.train(), embedding, margin=margin,
 ...     duration=duration, per_label=per_label)
+UserWarning: 68 labels (out of 179) have less than 40 training samples.
 
 # shape of feature sequences (n_frames, n_features)
 >>> input_shape = generator.get_shape()
+
 # number of samples per epoch
 >>> samples_per_epoch = per_label * (per_label - 1) * generator.n_labels
 # number of epochs
