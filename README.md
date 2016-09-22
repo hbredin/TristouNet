@@ -26,7 +26,7 @@ $ pip install "theano==0.8.2"
 $ pip install "keras==1.1.0"
 $ pip install "pyannote.db.etape==0.2.1"
 $ pip install "pyannote.metrics==0.8"
-$ pip install "pyannote.audio==0.1.1"
+$ pip install "pyannote.audio==0.1.2"
 ```
 
 What did I just install?
