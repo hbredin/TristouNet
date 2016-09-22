@@ -52,14 +52,14 @@ $ cat ~/.keras/keras.json
 
 #### About the ETAPE database
 
-To reproduce the experiment, you obviously need to have access to the ETAPE corpus.
+To reproduce the experiment, you obviously need to have access to the ETAPE corpus.  
+It should be available soon in [ELRA catalogue]('http://catalog.elra.info/index.php?language=en').
 
 However, if you own another corpus with *"who speaks when"* annotations, then
 you are just one step away from testing `TristouNet` on your own corpus.
 
 Just fork [`pyannote.db.etape`](http://github.com/pyannote/pyannote-db-etape)
-and adapt the code to your own database. If (and only if) the database is
-freely available for anyone to use, I am willing to help you do that.
+and adapt the code to your own database. If (and only if) the database is available for anyone to use, I am willing to help you do that.
 
 ## Training
 
@@ -114,7 +114,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 >>> samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
 
 # number of epochs
->>> nb_epoch = 70
+>>> nb_epoch = 10
 
 # actual training
 >>> embedding.fit(input_shape, generator, samples_per_epoch, nb_epoch)
