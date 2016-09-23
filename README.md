@@ -13,7 +13,6 @@ Code for http://arxiv.org/abs/1609.04301
 }
 ```
 
-
 ## Installation
 
 **Foreword:** Sorry about the `python=2.7` constraint but [`yaafe`](https://github.com/Yaafe/Yaafe) does not support Python 3 at the time of writing this.  
@@ -27,7 +26,7 @@ $ pip install "theano==0.8.2"
 $ pip install "keras==1.1.0"
 $ pip install "pyannote.db.etape==0.2.1"
 $ pip install "pyannote.metrics==0.8"
-$ pip install "pyannote.audio==0.1.2"
+$ pip install "pyannote.audio==0.1.3"
 ```
 
 What did I just install?
@@ -64,14 +63,21 @@ and adapt the code to your own database. If (and only if) the database is availa
 
 ## Training
 
+For convenience, this script is also available in `README.py`.
+
 ```python
+
+# environment
+>>> WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
+>>> LOG_DIR = '/path/to/where/trained/models/are/stored'
+
 # feature extraction
 >>> from pyannote.audio.features.yaafe import YaafeMFCC
 >>> feature_extractor = YaafeMFCC(e=False, De=True, DDe=True,
 ...                               coefs=11, D=True, DD=True)
 
 # ETAPE database
->>> medium_template = {'wav': '/path/to/where/files/are/stored/{uri}.wav'}
+>>> medium_template = {'wav': WAV_TEMPLATE}
 >>> from pyannote.database import Etape
 >>> database = Etape(medium_template=medium_template)
 
@@ -88,7 +94,7 @@ and adapt the code to your own database. If (and only if) the database is availa
 >>> loss = TripletLoss(architecture, margin=margin)
 
 >>> from pyannote.audio.embedding.base import SequenceEmbedding
->>> log_dir = '/path/to/where/trained/models/are/stored'
+>>> log_dir = LOG_DIR
 >>> embedding = SequenceEmbedding(
 ...     loss=loss, optimizer='rmsprop', log_dir=log_dir)
 
@@ -115,10 +121,62 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 >>> samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
 
 # number of epochs
->>> nb_epoch = 10
+>>> nb_epoch = 70
 
 # actual training
 >>> embedding.fit(input_shape, generator, samples_per_epoch, nb_epoch)
+```
+
+## *"same/different"* toy experiment
+
+```python
+
+# generate set of labeled sequences
+>>> import numpy as np
+>>> from pyannote.audio.generators.labels import \
+...     LabeledFixedDurationSequencesBatchGenerator
+>>> generator = LabeledFixedDurationSequencesBatchGenerator(
+...     feature_extractor, duration=duration, step=duration, batch_size=-1)
+>>> X, y = zip(*batch_generator(protocol.development()))
+>>> X, y = np.vstack(X), np.hstack(y)
+
+# make random 'deterministic'
+>>> np.random.seed(1337)
+
+# randomly select 20 sequences from each speaker to ensure
+# all speakers have the same importance in the evaluation
+>>> unique, y, counts = np.unique(y, return_inverse=True, return_counts=True)
+>>> n_speakers = len(unique)
+>>> indices = []
+>>> for speaker in range(n_speakers):
+...     i = np.random.choice(np.where(y == speaker)[0], size=20, replace=True)
+...     indices.append(i)
+>>> indices = np.hstack(indices)
+>>> X, y = X[indices], y[indices, np.newaxis]
+
+# load pre-trained embedding
+>>> architecture_yml = log_dir + '/architecture.yml'
+>>> weights_h5 = log_dir + '/weights/{epoch:04d}.h5'.format(epoch=nb_epoch - 1)
+>>> embedding = SequenceEmbedding.from_disk(architecture_yml, weights_h5)
+
+# embed all sequences
+>>> fX = embedding.transform(X, batch_size=batch_size, verbose=0)
+
+# compute euclidean distance between every pair of sequences
+>>> from scipy.spatial.distance import pdist
+>>> distances = pdist(fX, metric='euclidean')
+
+# compute same/different groundtruth
+>>> y_true = pdist(y, metric='chebyshev') < 1
+
+# plot positive/negative scores distribution
+# plot DET curve and return equal error rate
+>>> from pyannote.metrics.plot.binary_classification import \
+...     plot_det_curve, plot_distributions
+>>> prefix = log_dir + '/plot.{epoch:04d}'.format(epoch=nb_epoch - 1)
+>>> plot_distributions(y_true, distances, prefix)
+>>> eer = plot_det_curve(y_true, -distances, prefix)
+>>> print('EER = {eer:.2f}%'.format(eer=100*eer))
 ```
 
 ## Speaker change detection
