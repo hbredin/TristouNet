@@ -16,7 +16,8 @@ Code for http://arxiv.org/abs/1609.04301
 
 ## Installation
 
-**Foreword:** Sorry about the `python=2.7` constraint but [`yaafe`](https://github.com/Yaafe/Yaafe) does not support Python 3 at the time of writing this. Ping me if this is no longer true!
+**Foreword:** Sorry about the `python=2.7` constraint but [`yaafe`](https://github.com/Yaafe/Yaafe) does not support Python 3 at the time of writing this.  
+Ping me if this is no longer true!
 
 ```bash
 $ conda create --name tristounet python=2.7 anaconda
@@ -175,7 +176,8 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ```
 
 Replace `Segmentation` by `BICSegmentation` or `GaussianDivergenceSegmentation`
-to get baseline results. You might need to install `pyannote.algorithms==0.6.5` first.
+to get baseline results.  
+You might need to install `pyannote.algorithms==0.6.5` first.
 
 ```python
 >>> from pyannote.audio.segmentation import BICSegmentation
