@@ -53,7 +53,7 @@ $ cat ~/.keras/keras.json
 #### About the ETAPE database
 
 To reproduce the experiment, you obviously need to have access to the ETAPE corpus.  
-It should be available soon in [ELRA catalogue]('http://catalog.elra.info/index.php?language=en').
+It should be available soon in [ELRA catalogue](http://catalog.elra.info/index.php?language=en).
 
 However, if you own another corpus with *"who speaks when"* annotations, then
 you are just one step away from testing `TristouNet` on your own corpus.
