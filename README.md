@@ -63,10 +63,9 @@ and adapt the code to your own database. If (and only if) the database is availa
 
 ## Training
 
-For convenience, this script is also available in `README.py`.
+For convenience, this script is also available in `train.py`.
 
 ```python
-
 # environment
 >>> WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
 >>> LOG_DIR = '/path/to/where/trained/models/are/stored'
@@ -129,6 +128,8 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 
 ## *"same/different"* toy experiment
 
+For convenience, this script is also available in `same_different_experiment.py`.
+
 ```python
 
 # generate set of labeled sequences
@@ -180,6 +181,8 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ```
 
 ## Speaker change detection
+
+For convenience, this script is also available in `speaker_change_detection.py`.
 
 ```python
 # load pre-trained embedding
