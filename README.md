@@ -137,7 +137,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ...     LabeledFixedDurationSequencesBatchGenerator
 >>> generator = LabeledFixedDurationSequencesBatchGenerator(
 ...     feature_extractor, duration=duration, step=duration, batch_size=-1)
->>> X, y = zip(*batch_generator(protocol.development()))
+>>> X, y = zip(*generator(protocol.development()))
 >>> X, y = np.vstack(X), np.hstack(y)
 
 # make random 'deterministic'

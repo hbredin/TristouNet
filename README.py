@@ -66,7 +66,7 @@ from pyannote.audio.generators.labels import \
     LabeledFixedDurationSequencesBatchGenerator
 generator = LabeledFixedDurationSequencesBatchGenerator(
     feature_extractor, duration=duration, step=duration, batch_size=-1)
-X, y = zip(*batch_generator(protocol.development()))
+X, y = zip(*generator(protocol.development()))
 X, y = np.vstack(X), np.hstack(y)
 
 # make random 'deterministic'
