@@ -25,7 +25,7 @@ $ conda install -c yaafe yaafe=0.65
 $ pip install "theano==0.8.2"
 $ pip install "keras==1.1.0"
 $ pip install "pyannote.db.etape==0.2.1"
-$ pip install "pyannote.metrics==0.8"
+$ pip install "pyannote.metrics==0.9"
 $ pip install "pyannote.audio==0.1.3"
 ```
 
@@ -175,7 +175,7 @@ For convenience, this script is also available in `same_different_experiment.py`
 >>> from pyannote.metrics.plot.binary_classification import \
 ...     plot_det_curve, plot_distributions
 >>> prefix = log_dir + '/plot.{epoch:04d}'.format(epoch=nb_epoch - 1)
->>> plot_distributions(y_true, distances, prefix)
+>>> plot_distributions(y_true, distances, prefix, xlim=(0, 2), ymax=3, nbins=100)
 >>> eer = plot_det_curve(y_true, -distances, prefix)
 >>> print('EER = {eer:.2f}%'.format(eer=100*eer))
 ```

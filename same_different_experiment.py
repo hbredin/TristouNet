@@ -70,6 +70,6 @@ y_true = pdist(y, metric='chebyshev') < 1
 from pyannote.metrics.plot.binary_classification import \
     plot_det_curve, plot_distributions
 prefix = LOG_DIR + '/plot.{epoch:04d}'.format(epoch=nb_epoch - 1)
-plot_distributions(y_true, distances, prefix)
+plot_distributions(y_true, distances, prefix, xlim=(0, 2), ymax=3, nbins=100)
 eer = plot_det_curve(y_true, -distances, prefix)
 print('EER = {eer:.2f}%'.format(eer=100*eer))
