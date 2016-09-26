@@ -1,15 +1,24 @@
+# USAGE:
+# export DURATION=2.0  # use 2s sequences
+# python train.py $DURATION
+
 # ---- <edit> -----------------------------------------------------------------
 # environment
 WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
 LOG_DIR = '/path/to/where/trained/models/are/stored'
-
-# sequence duration (in seconds)
-duration = 2.0
-
-# number of epoch
-nb_epoch = 70
 # ---- </edit> ---------------------------------------------------------------
 
+# sequence duration (in seconds)
+import sys
+duration = float(sys.argv[1])
+
+# number of epoch
+nb_epoch = 1000
+
+LOG_DIR = LOG_DIR + '/{duration:.1f}s'.format(duration=duration)
+
+import numpy as np
+np.random.seed(1337)  # for reproducibility
 
 # feature extraction
 from pyannote.audio.features.yaafe import YaafeMFCC
