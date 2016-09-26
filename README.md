@@ -70,6 +70,10 @@ For convenience, this script is also available in `train.py`.
 >>> WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
 >>> LOG_DIR = '/path/to/where/trained/models/are/stored'
 
+# for reproducibility
+>>> import numpy as np
+>>> np.random.seed(1337)
+
 # feature extraction
 >>> from pyannote.audio.features.yaafe import YaafeMFCC
 >>> feature_extractor = YaafeMFCC(e=False, De=True, DDe=True,
@@ -131,18 +135,17 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 For convenience, this script is also available in `same_different_experiment.py`.
 
 ```python
+# for reproducibility
+>>> import numpy as np
+>>> np.random.seed(1337)
 
 # generate set of labeled sequences
->>> import numpy as np
 >>> from pyannote.audio.generators.labels import \
 ...     LabeledFixedDurationSequencesBatchGenerator
 >>> generator = LabeledFixedDurationSequencesBatchGenerator(
 ...     feature_extractor, duration=duration, step=duration, batch_size=-1)
 >>> X, y = zip(*generator(protocol.development()))
 >>> X, y = np.vstack(X), np.hstack(y)
-
-# make random 'deterministic'
->>> np.random.seed(1337)
 
 # randomly select 20 sequences from each speaker to ensure
 # all speakers have the same importance in the evaluation
@@ -185,6 +188,10 @@ For convenience, this script is also available in `same_different_experiment.py`
 For convenience, this script is also available in `speaker_change_detection.py`.
 
 ```python
+# for reproducibility
+>>> import numpy as np
+>>> np.random.seed(1337)
+
 # load pre-trained embedding
 >>> architecture_yml = log_dir + '/architecture.yml'
 >>> weights_h5 = log_dir + '/weights/{epoch:04d}.h5'.format(epoch=nb_epoch - 1)
@@ -206,7 +213,6 @@ For convenience, this script is also available in `speaker_change_detection.py`.
 ...     predictions[uri] = segmentation.apply(wav)
 
 # tested thresholds
->>> import numpy as np
 >>> alphas = np.linspace(0, 1, 10)
 
 # evaluation metrics (purity and coverage)
