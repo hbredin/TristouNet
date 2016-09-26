@@ -1,14 +1,25 @@
+# USAGE:
+# export DURATION=2.0  # use 2s sequences
+# export EPOCH=70      # use model after 70 epochs
+# python speaker_change_detection.py $DURATION $EPOCH 
+
 # ---- <edit> -----------------------------------------------------------------
 # environment
 WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
 LOG_DIR = '/path/to/where/trained/models/are/stored'
+# ---- </edit> ---------------------------------------------------------------
 
 # sequence duration (in seconds)
-duration = 2.0
+import sys
+duration = float(sys.argv[1])
 
 # number of epoch
-nb_epoch = 70
-# ---- </edit> ---------------------------------------------------------------
+nb_epoch = int(sys.argv[2])
+
+LOG_DIR = LOG_DIR + '/{duration:.1f}s'.format(duration=duration)
+
+import numpy as np
+np.random.seed(1337)  # for reproducibility
 
 # feature extraction
 from pyannote.audio.features.yaafe import YaafeMFCC
@@ -46,8 +57,7 @@ for test_file in protocol.development():
     predictions[uri] = segmentation.apply(wav)
 
 # tested thresholds
-import numpy as np
-alphas = np.linspace(0, 1, 10)
+alphas = np.linspace(0, 1, 30)
 
 # evaluation metrics (purity and coverage)
 from pyannote.metrics.segmentation import SegmentationPurity
