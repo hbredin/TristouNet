@@ -46,13 +46,13 @@ generator = LabeledFixedDurationSequencesBatchGenerator(
 X, y = zip(*generator(protocol.development()))
 X, y = np.vstack(X), np.hstack(y)
 
-# randomly select 20 sequences from each speaker to ensure
+# randomly select (at most) 100 sequences from each speaker to ensure
 # all speakers have the same importance in the evaluation
 unique, y, counts = np.unique(y, return_inverse=True, return_counts=True)
 n_speakers = len(unique)
 indices = []
 for speaker in range(n_speakers):
-    i = np.random.choice(np.where(y == speaker)[0], size=20, replace=True)
+    i = np.random.choice(np.where(y == speaker)[0], size=min(100, counts[speaker]), replace=False)
     indices.append(i)
 indices = np.hstack(indices)
 X, y = X[indices], y[indices, np.newaxis]
