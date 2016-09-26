@@ -1,14 +1,25 @@
+# USAGE:
+# export DURATION=2.0  # use 2s sequences
+# export EPOCH=70      # use model after 70epochs
+# python same_different_experiment.py $DURATION $EPOCH
+
 # ---- <edit> -----------------------------------------------------------------
 # environment
 WAV_TEMPLATE = '/path/to/where/files/are/stored/{uri}.wav'
 LOG_DIR = '/path/to/where/trained/models/are/stored'
+# ---- </edit> ---------------------------------------------------------------
 
 # sequence duration (in seconds)
-duration = 2.0
+import sys
+duration = float(sys.argv[1])
 
 # number of epoch
-nb_epoch = 70
-# ---- </edit> ---------------------------------------------------------------
+nb_epoch = int(sys.argv[2])
+
+LOG_DIR = LOG_DIR + '/{duration:.1f}s'.format(duration=duration)
+
+import numpy as np
+np.random.seed(1337)  # for reproducibility
 
 # feature extraction
 from pyannote.audio.features.yaafe import YaafeMFCC
@@ -28,16 +39,12 @@ from pyannote.audio.embedding.base import SequenceEmbedding
 batch_size = 32
 
 # generate set of labeled sequences
-import numpy as np
 from pyannote.audio.generators.labels import \
     LabeledFixedDurationSequencesBatchGenerator
 generator = LabeledFixedDurationSequencesBatchGenerator(
     feature_extractor, duration=duration, step=duration, batch_size=-1)
 X, y = zip(*generator(protocol.development()))
 X, y = np.vstack(X), np.hstack(y)
-
-# make random 'deterministic'
-np.random.seed(1337)
 
 # randomly select 20 sequences from each speaker to ensure
 # all speakers have the same importance in the evaluation
