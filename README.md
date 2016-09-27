@@ -64,6 +64,7 @@ and adapt the code to your own database. If (and only if) the database is availa
 ## Training
 
 For convenience, this script is also available in `train.py`.
+See file header for usage instructions.
 
 ```python
 # environment
@@ -133,6 +134,7 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 ## *"same/different"* toy experiment
 
 For convenience, this script is also available in `same_different_experiment.py`.
+See file header for usage instructions.
 
 ```python
 # for reproducibility
@@ -183,9 +185,15 @@ For convenience, this script is also available in `same_different_experiment.py`
 >>> print('EER = {eer:.2f}%'.format(eer=100*eer))
 ```
 
+Baseline results with BIC and Gaussian divergence on the same experimental
+protocol can be obtained with `same_different_experiment_baseline.py`.
+See file header for usage instructions.
+
+
 ## Speaker change detection
 
 For convenience, this script is also available in `speaker_change_detection.py`.
+See file header for usage instructions.
 
 ```python
 # for reproducibility
