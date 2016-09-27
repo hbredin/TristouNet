@@ -1,7 +1,7 @@
 # USAGE:
 # export DURATION=2.0  # use 2s sequences
 # export EPOCH=70      # use model after 70 epochs
-# python speaker_change_detection.py $DURATION $EPOCH 
+# python speaker_change_detection.py $DURATION $EPOCH
 
 # ---- <edit> -----------------------------------------------------------------
 # environment
