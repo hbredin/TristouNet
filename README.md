@@ -26,7 +26,7 @@ $ pip install "theano==0.8.2"
 $ pip install "keras==1.1.0"
 $ pip install "pyannote.db.etape==0.2.1"
 $ pip install "pyannote.metrics==0.9"
-$ pip install "pyannote.audio==0.1.3"
+$ pip install "pyannote.audio==0.1.4"
 ```
 
 What did I just install?
@@ -243,12 +243,14 @@ For convenience, this script is also available in `speaker_change_detection.py`.
 ```
 
 Replace `Segmentation` by `BICSegmentation` or `GaussianDivergenceSegmentation`
-to get baseline results.  
-You might need to install `pyannote.algorithms==0.6.5` first.
+to get baseline results. You should also remove derivatives from MFCC feature
+extractor (`D=False, DD=False, De=False, DDe=False`) as it leads to better
+baseline performance. You might need to install `pyannote.algorithms==0.6.5` first.
 
 ```python
 >>> from pyannote.audio.segmentation import BICSegmentation
 >>> segmentation = BICSegmentation(feature_extractor,
+...                                covariance_type='full',
 ...                                duration=duration,
 ...                                step=0.100)
 ```
@@ -259,3 +261,6 @@ You might need to install `pyannote.algorithms==0.6.5` first.
 ...                                               duration=duration,
 ...                                               step=0.100)
 ```
+
+For convenience, two scripts are available: `speaker_change_detection_bic.py`
+and `speaker_change_detection_div.py`. See file header for usage instructions.

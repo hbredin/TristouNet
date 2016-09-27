@@ -1,7 +1,6 @@
 # USAGE:
 # export DURATION=2.0  # use 2s sequences
-# export EPOCH=70      # use model after 70 epochs
-# python speaker_change_detection.py $DURATION $EPOCH 
+# python speaker_change_detection_bic.py $DURATION
 
 # ---- <edit> -----------------------------------------------------------------
 # environment
@@ -13,9 +12,6 @@ LOG_DIR = '/path/to/where/trained/models/are/stored'
 import sys
 duration = float(sys.argv[1])
 
-# number of epoch
-nb_epoch = int(sys.argv[2])
-
 LOG_DIR = LOG_DIR + '/{duration:.1f}s'.format(duration=duration)
 
 import numpy as np
@@ -23,8 +19,8 @@ np.random.seed(1337)  # for reproducibility
 
 # feature extraction
 from pyannote.audio.features.yaafe import YaafeMFCC
-feature_extractor = YaafeMFCC(e=False, De=True, DDe=True,
-                              coefs=11, D=True, DD=True)
+feature_extractor = YaafeMFCC(e=False, De=False, DDe=False,
+                              coefs=11, D=False, DD=False)
 
 # ETAPE database
 medium_template = {'wav': WAV_TEMPLATE}
@@ -34,16 +30,9 @@ database = Etape(medium_template=medium_template)
 # experimental protocol (ETAPE TV subset)
 protocol = database.get_protocol('SpeakerDiarization', 'TV')
 
-from pyannote.audio.embedding.base import SequenceEmbedding
-
-# load pre-trained embedding
-architecture_yml = LOG_DIR + '/architecture.yml'
-weights_h5 = LOG_DIR + '/weights/{epoch:04d}.h5'.format(epoch=nb_epoch - 1)
-embedding = SequenceEmbedding.from_disk(architecture_yml, weights_h5)
-
-from pyannote.audio.embedding.segmentation import Segmentation
-segmentation = Segmentation(embedding, feature_extractor,
-                            duration=duration, step=0.100)
+from pyannote.audio.segmentation import BICSegmentation
+segmentation = BICSegmentation(feature_extractor, covariance_type='full',
+                               duration=duration, step=0.100)
 
 # process files from development set
 # (and, while we are at it, load groundtruth for later comparison)
@@ -57,7 +46,7 @@ for test_file in protocol.development():
     predictions[uri] = segmentation.apply(wav)
 
 # tested thresholds
-alphas = np.linspace(0, 1, 30)
+alphas = np.linspace(0, 1, 50)
 
 # evaluation metrics (purity and coverage)
 from pyannote.metrics.segmentation import SegmentationPurity
@@ -79,7 +68,7 @@ for i, alpha in enumerate(alphas):
 
 # print the results in three columns:
 # threshold, purity, coverage
-TEMPLATE = '{alpha:.2f} {purity:.1f}% {coverage:.1f}%'
+TEMPLATE = '{alpha:.3f} {purity:.1f}% {coverage:.1f}%'
 for i, a in enumerate(alphas):
     p = 100 * abs(purity[i])
     c = 100 * abs(coverage[i])
