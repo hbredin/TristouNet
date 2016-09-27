@@ -10,6 +10,7 @@ Code for http://arxiv.org/abs/1609.04301
     title = {{TristouNet: Triplet Loss for Speaker Turn Embedding}},
     booktitle = {Submitted to ICASSP 2017},
     year = {2016},
+    url = {http://arxiv.org/abs/1609.04301},
 }
 ```
 
