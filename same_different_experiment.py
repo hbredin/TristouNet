@@ -28,7 +28,7 @@
 
 # USAGE:
 # export DURATION=2.0  # use 2s sequences
-# export EPOCH=70      # use model after 70epochs
+# export EPOCH=50      # use model after 50 epochs
 # python same_different_experiment.py $DURATION $EPOCH
 
 # ---- <edit> -----------------------------------------------------------------
