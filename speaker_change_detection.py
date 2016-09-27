@@ -57,7 +57,7 @@ for test_file in protocol.development():
     predictions[uri] = segmentation.apply(wav)
 
 # tested thresholds
-alphas = np.linspace(0, 1, 30)
+alphas = np.linspace(0, 1, 50)
 
 # evaluation metrics (purity and coverage)
 from pyannote.metrics.segmentation import SegmentationPurity
