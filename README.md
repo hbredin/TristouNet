@@ -114,7 +114,6 @@ See file header for usage instructions.
 >>> generator = TripletBatchGenerator(
 ...     feature_extractor, protocol.train(), embedding, margin=margin,
 ...     duration=duration, per_label=per_label, batch_size=batch_size)
-UserWarning: 68 labels (out of 179) have less than 40 training samples.
 
 # shape of feature sequences (n_frames, n_features)
 >>> input_shape = generator.get_shape()
@@ -125,10 +124,30 @@ UserWarning: 68 labels (out of 179) have less than 40 training samples.
 >>> samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
 
 # number of epochs
->>> nb_epoch = 70
+>>> nb_epoch = 50
 
 # actual training
 >>> embedding.fit(input_shape, generator, samples_per_epoch, nb_epoch)
+```
+
+Here is an excerpt of the expected output:
+
+```
+UserWarning: 68 labels (out of 179) have less than 40 training samples.
+
+Epoch 1/1000
+278528/278528 [==============================] - 1722s - loss: 0.1074
+Epoch 2/1000
+278528/278528 [==============================] - 1701s - loss: 0.1179
+Epoch 3/1000
+278528/278528 [==============================] - 1691s - loss: 0.1204
+...
+Epoch 48/1000
+278528/278528 [==============================] - 1688s - loss: 0.0925
+Epoch 49/1000
+278528/278528 [==============================] - 1675s - loss: 0.0937
+Epoch 50/1000
+278528/278528 [==============================] - 1678s - loss: 0.0863
 ```
 
 ## *"same/different"* toy experiment
@@ -185,10 +204,20 @@ See file header for usage instructions.
 >>> print('EER = {eer:.2f}%'.format(eer=100*eer))
 ```
 
+This is the expected output:
+
+```
+EER = 14.44%
+```
+
 Baseline results with BIC and Gaussian divergence on the same experimental
 protocol can be obtained with `same_different_experiment_baseline.py`.
-See file header for usage instructions.
+See file header for usage instructions. This is the expected output:
 
+```
+BIC EER = 20.53%
+DIV EER = 22.49%
+```
 
 ## Speaker change detection
 
@@ -221,7 +250,7 @@ See file header for usage instructions.
 ...     predictions[uri] = segmentation.apply(wav)
 
 # tested thresholds
->>> alphas = np.linspace(0, 1, 10)
+>>> alphas = np.linspace(0, 1, 50)
 
 # evaluation metrics (purity and coverage)
 >>> from pyannote.metrics.segmentation import SegmentationPurity
@@ -250,6 +279,20 @@ See file header for usage instructions.
 ...     print(TEMPLATE.format(alpha=a, purity=p, coverage=c))
 ```
 
+Here is an excerpt of the expected result:
+
+```
+0.00 95.2% 38.9%
+0.02 95.2% 38.9%
+0.04 95.2% 39.0%
+...
+0.49 94.4% 55.0%
+...
+0.96 86.7% 93.7%
+0.98 86.3% 94.4%
+1.00 86.2% 94.9%
+```
+
 Replace `Segmentation` by `BICSegmentation` or `GaussianDivergenceSegmentation`
 to get baseline results. You should also remove derivatives from MFCC feature
 extractor (`D=False, DD=False, De=False, DDe=False`) as it leads to better
@@ -263,11 +306,39 @@ baseline performance. You might need to install `pyannote.algorithms==0.6.5` fir
 ...                                step=0.100)
 ```
 
+Here is an excerpt of the expected result:
+
+```
+0.000 95.1% 37.7%
+0.020 95.1% 37.7%
+0.041 95.1% 37.7%
+...
+0.388 94.4% 48.0%
+...
+0.959 86.4% 86.8%
+0.980 86.2% 88.0%
+1.000 85.8% 88.8%
+```
+
 ```python
 >>> from pyannote.audio.segmentation import GaussianDivergenceSegmentation
 >>> segmentation = GaussianDivergenceSegmentation(feature_extractor,
 ...                                               duration=duration,
 ...                                               step=0.100)
+```
+
+Here is an excerpt of the expected result:
+
+
+```
+0.000 95.2% 36.2%
+0.020 95.2% 36.2%
+...
+0.327 94.4% 48.3%
+...
+0.959 87.5% 85.8%
+0.980 87.4% 86.5%
+1.000 87.0% 87.5%
 ```
 
 For convenience, two scripts are available: `speaker_change_detection_bic.py`
