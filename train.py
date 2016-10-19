@@ -80,7 +80,7 @@ from pyannote.audio.embedding.triplet_loss.generator import TripletBatchGenerato
 per_label = 40  # `n` in the paper
 batch_size = 8192
 generator = TripletBatchGenerator(
-    feature_extractor, protocol.train(), embedding, margin=margin,
+    feature_extractor, protocol.train(), margin=margin,
     duration=duration, per_label=per_label, batch_size=batch_size)
 
 # shape of feature sequences (n_frames, n_features)
