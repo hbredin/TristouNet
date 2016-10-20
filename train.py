@@ -91,7 +91,10 @@ input_shape = generator.get_shape()
 samples_per_epoch = per_label * (per_label - 1) * generator.n_labels
 samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
 
+from pyannote.audio.optimizers import SSMORMS3
+optimizer = SSMORMS3()
+
 # actual training
 embedding.fit(input_shape, architecture,
               generator, samples_per_epoch, nb_epoch,
-              optimizer='rmsprop', log_dir=LOG_DIR)
+              optimizer=optimizer, log_dir=LOG_DIR)
