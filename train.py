@@ -66,22 +66,21 @@ from pyannote.audio.embedding.models import TristouNet
 architecture = TristouNet()
 
 # triplet loss
-from pyannote.audio.embedding.losses import TripletLoss
+from pyannote.audio.embedding.triplet_loss.glue import TripletLoss
 margin = 0.2    # `alpha` in the paper
-loss = TripletLoss(architecture, margin=margin)
+glue = TripletLoss(margin=margin)
 
 from pyannote.audio.embedding.base import SequenceEmbedding
-embedding = SequenceEmbedding(
-    loss=loss, optimizer='rmsprop', log_dir=LOG_DIR)
+embedding = SequenceEmbedding(glue=glue)
 
 # triplet sampling
 # this might take some time as the whole corpus is loaded in memory,
 # and the whole set of MFCC features sequences is precomputed
-from pyannote.audio.embedding.generator import TripletBatchGenerator
+from pyannote.audio.embedding.triplet_loss.generator import TripletBatchGenerator
 per_label = 40  # `n` in the paper
 batch_size = 8192
 generator = TripletBatchGenerator(
-    feature_extractor, protocol.train(), embedding, margin=margin,
+    feature_extractor, protocol.train(), margin=margin,
     duration=duration, per_label=per_label, batch_size=batch_size)
 
 # shape of feature sequences (n_frames, n_features)
@@ -92,5 +91,10 @@ input_shape = generator.get_shape()
 samples_per_epoch = per_label * (per_label - 1) * generator.n_labels
 samples_per_epoch = samples_per_epoch - (samples_per_epoch % batch_size)
 
+from pyannote.audio.optimizers import SSMORMS3
+optimizer = SSMORMS3()
+
 # actual training
-embedding.fit(input_shape, generator, samples_per_epoch, nb_epoch)
+embedding.fit(input_shape, architecture,
+              generator, samples_per_epoch, nb_epoch,
+              optimizer=optimizer, log_dir=LOG_DIR)
