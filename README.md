@@ -5,11 +5,11 @@ Code for http://arxiv.org/abs/1609.04301
 ## Citation
 
 ```bibtex
-@inproceedings{Bredin2016,
+@inproceedings{Bredin2017,
     author = {Herv\'{e} Bredin},
     title = {{TristouNet: Triplet Loss for Speaker Turn Embedding}},
-    booktitle = {Submitted to ICASSP 2017},
-    year = {2016},
+    booktitle = {42nd IEEE International Conference on Acoustics, Speech and Signal Processing, ICASSP 2017},
+    year = {2017},
     url = {http://arxiv.org/abs/1609.04301},
 }
 ```
