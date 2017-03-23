@@ -32,6 +32,8 @@ $ pip install "pyannote.database==0.4.1"
 $ pip install "pyannote.generators==0.1.1"
 ```
 
+Using `pip freeze`, make sure you have installed these exact versions before submitting an issue.
+
 What did I just install?
 
 - [`keras`](keras.io) (and its [`theano`](http://deeplearning.net/software/theano/) backend) is used for all things deep.
