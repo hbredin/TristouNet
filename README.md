@@ -22,6 +22,7 @@ Ping me if this is no longer true!
 ```bash
 $ conda create --name tristounet python=2.7 anaconda
 $ source activate tristounet
+$ conda install gcc
 $ conda install -c yaafe yaafe=0.65
 $ pip install "theano==0.8.2"
 $ pip install "keras==1.1.0"
