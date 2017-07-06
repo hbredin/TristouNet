@@ -1,3 +1,9 @@
+
+This repository is no longer supported: a complete rewrite (leading to much better performance) is now part of [`pyannote-audio`](https://github.com/pyannote/pyannote-audio), which provides:
+
+* a [tutorial](https://github.com/pyannote/pyannote-audio#tutorials) to train, validate, and apply a TristouNet embedding
+* a pre-trained TristouNet model 
+
 # TristouNet: Triplet Loss for Speaker Turn Embedding
 
 Code for http://arxiv.org/abs/1609.04301
