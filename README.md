@@ -1,5 +1,5 @@
 
-This repository is no longer supported: a complete rewrite (leading to much better performance) is now part of [`pyannote-audio`](https://github.com/pyannote/pyannote-audio), which provides:
+This repository is no longer maintained: a complete rewrite (leading to much better performance) is now part of [`pyannote-audio`](https://github.com/pyannote/pyannote-audio), which provides:
 
 * a [tutorial](https://github.com/pyannote/pyannote-audio#tutorials) to train, validate, and apply a TristouNet embedding
 * a pre-trained TristouNet model 
